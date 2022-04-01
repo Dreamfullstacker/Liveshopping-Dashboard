@@ -2,6 +2,9 @@ import React, { Fragment } from 'react';
 import Breadcrumb from '../common/breadcrumb/breadcrumb' 
 import {Container,Row,Col,Card,CardHeader,CardBody} from 'reactstrap';
 
+import * as config from "../../config";
+
+import LiveAPI from "../../live-stream-api";
 
 const  Sample = (props) => {
     return (
