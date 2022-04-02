@@ -2,7 +2,6 @@
   "name": "poco-react",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://react.pixelstrap.com/poco/",
   "dependencies": {
     "@fullcalendar/daygrid": "^4.4.0",
     "@fullcalendar/interaction": "^4.4.0",
