@@ -1,6 +1,6 @@
 import React, { Fragment , useEffect, useState} from 'react';
 import Breadcrumb from '../common/breadcrumb/breadcrumb' 
-import {Container,Row,Col,Card,CardHeader,CardBody} from 'reactstrap';
+import {Container,Row,Col,Card,CardHeader,CardBody , Button} from 'reactstrap';
 import { Link } from "react-router-dom";
 // import VodCard from "./VodCard/VodCard";
 import * as config from "../../config";
@@ -83,12 +83,16 @@ const  Sample = (props) => {
               <Col sm="12">
                 <Card>
                   <CardHeader>
-                    <h5>LIVE Vidéo Programmé</h5>
+                    <div className='row justify-content-between'>
+                      <h5>LIVE Vidéo Programmé</h5>
+                      <Link to = {'live'}><Button>Create New Live</Button></Link>
+                    </div>
+                    
                   </CardHeader>
                   <CardBody>
                     <figure className="col-xl-3 col-md-4 col-6" itemProp="associatedMedia" itemscope="">
                       <a href="dashboard" itemProp="contentUrl" data-size="1600x950">
-                        <img className="img-thumbnail" src={require('../../assets/images/lightgallry/01.jpg')} itemProp="thumbnail" alt="Image description"></img>
+                        <img className="img-thumbnail" src={require('../../assets/images/lightgallry/01.png')} itemProp="thumbnail" alt="Image description"></img>
                       </a>
                       <figcaption itemProp="caption description">Titre de la vidéo programmée</figcaption>
                       <figcaption itemProp="caption description">Date : 01/01/2022</figcaption>

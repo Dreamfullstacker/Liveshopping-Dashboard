@@ -218,7 +218,7 @@ const  Live = (props) => {
               <Col sm="12" md="6">
                 <Card>
                   <CardHeader>
-                    <h5>Sample Card</h5><span>lorem ipsum dolor sit amet, consectetur adipisicing elit</span>
+                    <h5>Produits À Mettre En Avant</h5><span>Ces produits apparaitront sur la vidéo LIVE de votre session . Vous pourrez promouvoir ceux-ci dans votre live.</span>
                   </CardHeader>
                   <CardBody>
                   <Form className="needs-validation" novalidate="">

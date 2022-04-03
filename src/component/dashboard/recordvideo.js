@@ -6,6 +6,16 @@ import { isEmpty } from "lodash"
 import styles from "./AdminVideo.module.css";
 import VideoPlayer from "./VideoPlayer/VideoPlayer";
 import API from "../../get-video-api";
+import {
+    Button,
+    Form,
+    FormGroup,
+    Label,
+    Input,
+    InputGroup,
+    InputGroupAddon,
+    InputGroupText,
+  } from "reactstrap";
 
 import * as config from "../../config";
 
@@ -165,10 +175,6 @@ const  Sample = () => {
         setFormChanged(false);
     };
     
-    const handlePreviewClick = () => {
-        setShowPreview(!showPreview);
-    };
-    
     const handleKeyPress = (event) => {
         if (event.key === "Enter") {
           handleSave();
@@ -227,29 +233,34 @@ const  Sample = () => {
                             </section>
                         </Col>
                         <Col sm="12" md="4">
-                            <fieldset >
-                                <label htmlFor="title">Video title</label>
-                                    <input className={styles.field}
-                                    type="text"
-                                    name="title"
-                                    id="title"
-                                    placeholder="Title"
-                                    onChange={handleOnChange}
-                                    onKeyPress={handleKeyPress}
-                                    value={videoTitle}
-                                    ></input>
-
-
-                                <label htmlFor="subtitle">Video subtitle</label>
-                                <input className={styles.field}
-                                    type="text"
-                                    name="subtitle"
-                                    id="subtitle"
-                                    placeholder="Subtitle"
-                                    value={videoSubtitle}
-                                    onChange={handleOnChange}
-                                    onKeyPress={handleKeyPress}
-                                ></input>
+                            <fieldset style={{border : "none"}}>
+                                <Form>
+                                    <div className="form-row my-3">
+                                        <Label htmlFor="title" className='h3'>Video title</Label>
+                                        <Input className="form-control"
+                                            type="text"
+                                            name="title"
+                                            id="title"
+                                            placeholder="Title"
+                                            onChange={handleOnChange}
+                                            onKeyPress={handleKeyPress}
+                                            value={videoTitle}
+                                        />
+                                    </div>
+                                    <div className="form-row my-3">
+                                        <Label htmlFor="subtitle" className='h3'>Video subtitle</Label>
+                                        <Input className="form-control"
+                                            type="text"
+                                            name="subtitle"
+                                            id="subtitle"
+                                            placeholder="Subtitle"
+                                            value={videoSubtitle}
+                                            onChange={handleOnChange}
+                                            onKeyPress={handleKeyPress}
+                                        />
+                                    </div>
+                                    <Button>Save Change</Button>
+                                </Form>
                             </fieldset>
                         </Col>
                     </Row>
