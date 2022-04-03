@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import Breadcrumb from '../common/breadcrumb/breadcrumb' 
 import {Container,Row,Col,Card,CardHeader,CardBody} from 'reactstrap';
 import { isEmpty } from "lodash"
-
+import styles from "./AdminVideo.module.css";
 import VideoPlayer from "./VideoPlayer/VideoPlayer";
 import API from "../../get-video-api";
 
@@ -24,35 +24,37 @@ function NotFoundError() {
 }
 
 
-// function ThumbnailRadio(props) {
+function ThumbnailRadio(props) {
 
-//     const [imgError, setImageError] = useState(false);
+    const [imgError, setImageError] = useState(false);
   
-//     if(imgError) {
-//       return (
-//         <span></span>
-//       )
-//     }
-//     return (
-//       <>
-//         <input
-//           type="radio"
-//           id={props.id}
-//           name={props.name}
-//           value={props.value}
-//           checked={props.checked}
-//           onChange={props.onChange}
-//         />
-//         <label htmlFor={props.id}>
-//             <img
-//               alt={`${props.name}`}
-//               src={props.thumbnail}
-//               onError={e => setImageError(true)}
-//             />
-//         </label>
-//       </>
-//     );
-//   }
+    if(imgError) {
+      return (
+        <span></span>
+      )
+    }
+    return (
+      <>
+        <input
+          className={styles.thumbnailRadio}
+          type="radio"
+          id={props.id}
+          name={props.name}
+          value={props.value}
+          checked={props.checked}
+          onChange={props.onChange}
+        />
+        <label htmlFor={props.id}>
+            <img
+              alt={`${props.name}`}
+              className={styles.thumbnailRadioImage}
+              src={props.thumbnail}
+              onError={e => setImageError(true)}
+            />
+        </label>
+      </>
+    );
+  }
 
 const  Sample = () => {
 
@@ -115,63 +117,63 @@ const  Sample = () => {
         return () => { mounted = false };
     }, [fetchAPI]);
     
-    // const handleOnChange = (e) => {
-    //     setFormChanged(true);
-    //     switch (e.currentTarget.id) {
-    //       case "title":
-    //         setVideoTitle(e.currentTarget.value);
-    //         break;
-    //       case "subtitle":
-    //         setVideoSubtitle(e.currentTarget.value);
-    //         break;
-    //       default:
-    //         break;
-    //     }
-    // };
+    const handleOnChange = (e) => {
+        setFormChanged(true);
+        switch (e.currentTarget.id) {
+          case "title":
+            setVideoTitle(e.currentTarget.value);
+            break;
+          case "subtitle":
+            setVideoSubtitle(e.currentTarget.value);
+            break;
+          default:
+            break;
+        }
+    };
     
-    // const handleThumbnailChange = (e) => {
-    //     setFormChanged(true);
-    //     setSelectedThumbnail(`${e.currentTarget.value}`);
-    // };
+    const handleThumbnailChange = (e) => {
+        setFormChanged(true);
+        setSelectedThumbnail(`${e.currentTarget.value}`);
+    };
     
-    // const handleSave = () => {
-    //     const payload = {
-    //       title: videoTitle,
-    //       subtitle: videoSubtitle,
-    //       thumbnail: selectedThumbnail,
-    //     };
-    //     // Update API
+    const handleSave = () => {
+        const payload = {
+          title: videoTitle,
+          subtitle: videoSubtitle,
+          thumbnail: selectedThumbnail,
+        };
+        // Update API
     
-    //     if (config.USE_MOCK_DATA && config.USE_MOCK_DATA === true) {
-    //       putAPI(payload);
-    //     } else {
-    //       const putVideoUrl = `${config.API_URL}/video/${id}`;
-    //       fetch(putVideoUrl, {
-    //         method: 'PUT',
-    //         body: JSON.stringify(payload)
-    //       })
-    //       .then(response => response.json())
-    //       .then((res) => {
-    //         setVideoTitle(res.title);
-    //         setVideoSubtitle(res.subtitle);
-    //       })
-    //       .catch((error) => {
-    //         console.error(error);
-    //       });
-    //     }
-    //     // Hide save
-    //     setFormChanged(false);
-    // };
+        if (config.USE_MOCK_DATA && config.USE_MOCK_DATA === true) {
+          putAPI(payload);
+        } else {
+          const putVideoUrl = `${config.API_URL}/video/${id}`;
+          fetch(putVideoUrl, {
+            method: 'PUT',
+            body: JSON.stringify(payload)
+          })
+          .then(response => response.json())
+          .then((res) => {
+            setVideoTitle(res.title);
+            setVideoSubtitle(res.subtitle);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+        }
+        // Hide save
+        setFormChanged(false);
+    };
     
-    // const handlePreviewClick = () => {
-    //     setShowPreview(!showPreview);
-    // };
+    const handlePreviewClick = () => {
+        setShowPreview(!showPreview);
+    };
     
-    // const handleKeyPress = (event) => {
-    //     if (event.key === "Enter") {
-    //       handleSave();
-    //     }
-    // };
+    const handleKeyPress = (event) => {
+        if (event.key === "Enter") {
+          handleSave();
+        }
+    };
 
     if (response === null) return <NotFoundError/>
     if (isEmpty(response)) return (
@@ -181,21 +183,77 @@ const  Sample = () => {
     )
     return (
          <Fragment>
-         <Breadcrumb parent="Starter kit" title="Sample Page"/>
+         <Breadcrumb parent="Dashboard / recordedvideo" title={id} caption1 = "Recorded" caption2 = "Video" description = ""/>
          <Container fluid={true}>
             <Row>
               <Col sm="12">
                 <Card>
-                  <CardHeader>
-                    <h5>RecordVideo</h5>
-                  </CardHeader>
                   <CardBody>
-                    <p>{id}</p>
-                    <VideoPlayer
-                        controls={true}
-                        muted={true}
-                        videoStream={response.playbackUrl}
-                    />
+                    <Row>
+                        <Col sm="12" md="8">
+                            <VideoPlayer
+                                controls={true}
+                                muted={true}
+                                videoStream={response.playbackUrl}
+                            />
+                            <section className="pt-2">
+                                <h3>Thumbnail</h3>
+                                <fieldset className={styles.thumbnailSelectors} style = {{border : "none"}}>
+                                <ThumbnailRadio
+                                    id={response.thumbnails[0]}
+                                    name={"thumbnail"}
+                                    value={response.thumbnails[0]}
+                                    checked={selectedThumbnail === `${response.thumbnails[0]}`}
+                                    onChange={handleThumbnailChange}
+                                    thumbnail={response.thumbnails[0]}
+                                />
+                                <ThumbnailRadio
+                                    id={response.thumbnails[1]}
+                                    name={"thumbnail"}
+                                    value={response.thumbnails[1]}
+                                    checked={selectedThumbnail === `${response.thumbnails[1]}`}
+                                    onChange={handleThumbnailChange}
+                                    thumbnail={response.thumbnails[1]}
+                                />
+                                <ThumbnailRadio
+                                    id={response.thumbnails[2]}
+                                    name={"thumbnail"}
+                                    value={response.thumbnails[2]}
+                                    checked={selectedThumbnail === `${response.thumbnails[2]}`}
+                                    onChange={handleThumbnailChange}
+                                    thumbnail={response.thumbnails[2]}
+                                />
+                                </fieldset>
+                            </section>
+                        </Col>
+                        <Col sm="12" md="4">
+                            <fieldset >
+                                <label htmlFor="title">Video title</label>
+                                    <input className={styles.field}
+                                    type="text"
+                                    name="title"
+                                    id="title"
+                                    placeholder="Title"
+                                    onChange={handleOnChange}
+                                    onKeyPress={handleKeyPress}
+                                    value={videoTitle}
+                                    ></input>
+
+
+                                <label htmlFor="subtitle">Video subtitle</label>
+                                <input className={styles.field}
+                                    type="text"
+                                    name="subtitle"
+                                    id="subtitle"
+                                    placeholder="Subtitle"
+                                    value={videoSubtitle}
+                                    onChange={handleOnChange}
+                                    onKeyPress={handleKeyPress}
+                                ></input>
+                            </fieldset>
+                        </Col>
+                    </Row>
+                    
                   </CardBody>
                 </Card>
               </Col>

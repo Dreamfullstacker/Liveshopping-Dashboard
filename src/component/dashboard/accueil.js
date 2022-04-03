@@ -122,6 +122,7 @@ const  Sample = (props) => {
                           <img className="img-thumbnail" src={v.thumbnailUrl} itemProp="thumbnail" alt="Image description"></img>
                         {/* </a> */}
                         <figcaption itemProp="caption description">{v.title}</figcaption>
+                        <figcaption itemProp="caption description">{v.subtitle}</figcaption>
                         <figcaption itemProp="caption description">Date : 01/01/2022</figcaption>
                         </Link>
                       </figure>
