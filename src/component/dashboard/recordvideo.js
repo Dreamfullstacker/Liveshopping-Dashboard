@@ -24,35 +24,35 @@ function NotFoundError() {
 }
 
 
-function ThumbnailRadio(props) {
+// function ThumbnailRadio(props) {
 
-    const [imgError, setImageError] = useState(false);
+//     const [imgError, setImageError] = useState(false);
   
-    if(imgError) {
-      return (
-        <span></span>
-      )
-    }
-    return (
-      <>
-        <input
-          type="radio"
-        //   id={props.id}
-        //   name={props.name}
-        //   value={props.value}
-        //   checked={props.checked}
-        //   onChange={props.onChange}
-        />
-        <label htmlFor={props.id}>
-            <img
-              alt={`${props.name}`}
-              src={props.thumbnail}
-              onError={e => setImageError(true)}
-            />
-        </label>
-      </>
-    );
-  }
+//     if(imgError) {
+//       return (
+//         <span></span>
+//       )
+//     }
+//     return (
+//       <>
+//         <input
+//           type="radio"
+//           id={props.id}
+//           name={props.name}
+//           value={props.value}
+//           checked={props.checked}
+//           onChange={props.onChange}
+//         />
+//         <label htmlFor={props.id}>
+//             <img
+//               alt={`${props.name}`}
+//               src={props.thumbnail}
+//               onError={e => setImageError(true)}
+//             />
+//         </label>
+//       </>
+//     );
+//   }
 
 const  Sample = () => {
 
@@ -94,6 +94,7 @@ const  Sample = () => {
                 setVideoSubtitle(res.subtitle);
                 setSelectedThumbnail(res.thumbnail);
                 setApiFetched(true);
+                console.log(res.playbackUrl)
               }
               else {
                 setResponse(null)
@@ -103,82 +104,81 @@ const  Sample = () => {
               console.error(error);
             });
         }
-      }
-      useEffect(() => {
+    }
+    useEffect(() => {
         // Set mounted to true so that we know when first mount has happened
         let mounted = true;
         if (mounted && !apiFetched) {
-          fetchAPI()
+            fetchAPI()
         }
         // Set mounted to false when the component is unmounted
         return () => { mounted = false };
-      }, [fetchAPI]);
+    }, [fetchAPI]);
     
-      const handleOnChange = (e) => {
-        setFormChanged(true);
-        switch (e.currentTarget.id) {
-          case "title":
-            setVideoTitle(e.currentTarget.value);
-            break;
-          case "subtitle":
-            setVideoSubtitle(e.currentTarget.value);
-            break;
-          default:
-            break;
-        }
-      };
+    // const handleOnChange = (e) => {
+    //     setFormChanged(true);
+    //     switch (e.currentTarget.id) {
+    //       case "title":
+    //         setVideoTitle(e.currentTarget.value);
+    //         break;
+    //       case "subtitle":
+    //         setVideoSubtitle(e.currentTarget.value);
+    //         break;
+    //       default:
+    //         break;
+    //     }
+    // };
     
-      const handleThumbnailChange = (e) => {
-        setFormChanged(true);
-        setSelectedThumbnail(`${e.currentTarget.value}`);
-      };
+    // const handleThumbnailChange = (e) => {
+    //     setFormChanged(true);
+    //     setSelectedThumbnail(`${e.currentTarget.value}`);
+    // };
     
-      const handleSave = () => {
-        const payload = {
-          title: videoTitle,
-          subtitle: videoSubtitle,
-          thumbnail: selectedThumbnail,
-        };
-        // Update API
+    // const handleSave = () => {
+    //     const payload = {
+    //       title: videoTitle,
+    //       subtitle: videoSubtitle,
+    //       thumbnail: selectedThumbnail,
+    //     };
+    //     // Update API
     
-        if (config.USE_MOCK_DATA && config.USE_MOCK_DATA === true) {
-          putAPI(payload);
-        } else {
-          const putVideoUrl = `${config.API_URL}/video/${id}`;
-          fetch(putVideoUrl, {
-            method: 'PUT',
-            body: JSON.stringify(payload)
-          })
-          .then(response => response.json())
-          .then((res) => {
-            setVideoTitle(res.title);
-            setVideoSubtitle(res.subtitle);
-          })
-          .catch((error) => {
-            console.error(error);
-          });
-        }
+    //     if (config.USE_MOCK_DATA && config.USE_MOCK_DATA === true) {
+    //       putAPI(payload);
+    //     } else {
+    //       const putVideoUrl = `${config.API_URL}/video/${id}`;
+    //       fetch(putVideoUrl, {
+    //         method: 'PUT',
+    //         body: JSON.stringify(payload)
+    //       })
+    //       .then(response => response.json())
+    //       .then((res) => {
+    //         setVideoTitle(res.title);
+    //         setVideoSubtitle(res.subtitle);
+    //       })
+    //       .catch((error) => {
+    //         console.error(error);
+    //       });
+    //     }
+    //     // Hide save
+    //     setFormChanged(false);
+    // };
     
-        // Hide save
-        setFormChanged(false);
-      };
+    // const handlePreviewClick = () => {
+    //     setShowPreview(!showPreview);
+    // };
     
-      const handlePreviewClick = () => {
-        setShowPreview(!showPreview);
-      };
-    
-      const handleKeyPress = (event) => {
-        if (event.key === "Enter") {
-          handleSave();
-        }
-      };
+    // const handleKeyPress = (event) => {
+    //     if (event.key === "Enter") {
+    //       handleSave();
+    //     }
+    // };
 
-      if (response === null) return <NotFoundError/>
-  if (isEmpty(response)) return (
-    <section className="full-width screen-height fl fl-j-center fl-a-center">
-      <h1> Loading ...</h1>
-    </section>
-  )
+    if (response === null) return <NotFoundError/>
+    if (isEmpty(response)) return (
+        <section className="full-width screen-height fl fl-j-center fl-a-center">
+        <h1> Loading ...</h1>
+        </section>
+    )
     return (
          <Fragment>
          <Breadcrumb parent="Starter kit" title="Sample Page"/>
