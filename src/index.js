@@ -106,7 +106,7 @@ const Root = (props) =>  {
               path={`${process.env.PUBLIC_URL}/pages/comingsoon-bg-video`}
               component={ComingsoonVideo}
             ></Route>
-            {localStorage.getItem('currentUser') !== 'empty' ? (
+            {localStorage.getItem('currentUser') !== 'null' ? (
               <SnackbarProvider>
               <App>
                 <Route

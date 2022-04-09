@@ -30,7 +30,7 @@ const Login = (props) => {
   const [register_prodcategory, set_register_prodcategory] = useState('');
 
   useEffect(() => {
-    localStorage.setItem('currentUser','empty');
+    localStorage.setItem('currentUser','null');
   }, []);
 
   const toggleform = () => {

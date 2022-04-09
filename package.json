@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "proxy": "https://main.d23bhgx2d78ghh.amplifyapp.com/",
+  "homepage": "https://main.d23bhgx2d78ghh.amplifyapp.com/",
   "dependencies": {
     "@fullcalendar/daygrid": "^4.4.0",
     "@fullcalendar/interaction": "^4.4.0",
