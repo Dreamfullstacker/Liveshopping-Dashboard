@@ -69,6 +69,7 @@ const Login = (props) => {
             document.getElementById('login_alert').style.display = 'block';
             setTimeout(()=>{document.getElementById('login_alert').style.display = 'none';}, 3000)
           }
+          
         //     const users = json.Items.map(item => item.username);
         //     console.log(users)
             // this.setstate()
