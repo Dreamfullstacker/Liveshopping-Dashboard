@@ -297,7 +297,10 @@ const Header = (props) => {
                   <li><MessageSquare />Inbox</li>
                   <li><FileText />Taskboard</li>
                   <li><Settings/>Settings</li>
-                  <li><LogOut/>Logout</li>
+                  <li onClick={()=>{
+                    localStorage.setItem('currentUser','empty');
+                    window.location.href = `${process.env.PUBLIC_URL}/login`;
+                    }}><LogOut/>Logout</li>
                 </ul>
               </li>
             </ul>
