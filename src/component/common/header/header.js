@@ -1,7 +1,7 @@
 import React, { useState,useEffect,useCallback } from 'react';
 import Bookmark from './bookmark'
 import man from "../../../assets/images/dashboard/user.png"
-import {AlignCenter,FileText,Activity,User,Clipboard,Anchor,Settings,LogOut, ThumbsUp,MessageCircle,MessageSquare,Maximize,Search,MoreHorizontal} from 'react-feather'
+import {AlignCenter,FileText,User,Settings,LogOut,MessageSquare,Maximize,Search,MoreHorizontal} from 'react-feather'
 import {Row,Col,Form,FormGroup,Button} from 'reactstrap'
 import {MENUITEMS} from '../sidebar/menu'
 import {Link} from 'react-router-dom'

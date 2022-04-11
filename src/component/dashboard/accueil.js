@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 // import VodCard from "./VodCard/VodCard";
 import * as config from "../../config";
 
-import LiveAPI from "../../live-stream-api";
+// import LiveAPI from "../../live-stream-api"; 
 import API from "../../get-video-api";
 import FormatTimestamp from "../../utility/FormatTimestamp";
 
@@ -90,7 +90,7 @@ const  Sample = (props) => {
                     
                   </CardHeader>
                   <CardBody>
-                    <figure className="col-xl-3 col-md-4 col-6" itemProp="associatedMedia" itemscope="">
+                    <figure className="col-xl-3 col-md-4 col-6" itemProp="associatedMedia" itemScope="">
                       <a href="dashboard" itemProp="contentUrl" data-size="1600x950">
                         <img className="img-thumbnail" src={require('../../assets/images/lightgallry/01.png')} itemProp="thumbnail" alt="Image description"></img>
                       </a>
@@ -120,7 +120,7 @@ const  Sample = (props) => {
                       //   linkType={props.linkType}
                       // />
                       
-                      <figure className="col-xl-3 col-md-4 col-6" itemProp="associatedMedia" itemscope="" key={v.id} id={v.id}>
+                      <figure className="col-xl-3 col-md-4 col-6" itemProp="associatedMedia" itemScope="" key={v.id} id={v.id}>
                         <Link to={`recordvideo/${v.id}`}>
                         {/* <a href="recordvideo" itemProp="contentUrl" data-size="1600x950"> */}
                           <img className="img-thumbnail" src={v.thumbnailUrl} itemProp="thumbnail" alt="Image description"></img>

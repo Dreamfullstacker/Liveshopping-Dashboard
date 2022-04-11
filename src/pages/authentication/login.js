@@ -11,12 +11,12 @@ import {
   Button,
   Alert,
 } from "reactstrap";
-import { Redirect } from 'react-router';
+// import { Redirect } from 'react-router';
 
 
 const Login = (props) => {
-  const [loading, setLoading] = useState(false);
-  const [response, setResponse] = useState(false);
+  // const [loading, setLoading] = useState(false);
+  // const [response, setResponse] = useState(false);
 
   const [login_username, set_login_username] = useState('');
   const [login_password, set_login_password] = useState('');
@@ -37,9 +37,10 @@ const Login = (props) => {
     document.querySelector(".cont").classList.toggle("s--signup");
   };
 
-  const sendDataToParent = (login_username) => {
-    console.log('login success--------------------->',login_username)
-    localStorage.setItem('currentUser',login_username);
+  const sendDataToParent = (login_data) => {
+    console.log(login_data)
+    localStorage.setItem('currentUser',login_data);
+    console.log('currentUser=========>' , JSON.parse(localStorage.getItem('currentUser')));
   }
 
   const userlogin =(event) =>{
@@ -59,8 +60,8 @@ const Login = (props) => {
         .then(response => response.json())
         .then((json) => {
           console.log(json)
-          if(json == 'success'){
-            sendDataToParent(login_username)
+          if(json.Count >= 1){
+            sendDataToParent(JSON.stringify(json.Items[0]))
             window.location.href = `${process.env.PUBLIC_URL}/dashboard/accueil`;
           // return <Redirect to={`${process.env.PUBLIC_URL}/dashboard/accuil`} />
           console.log("test")
@@ -81,7 +82,7 @@ const Login = (props) => {
 
   const user_register = async (event) =>{
     event.preventDefault();
-    if(register_password == register_confirm_password)
+    if(register_password === register_confirm_password)
     try{
       fetch('https://q1unaiuytb.execute-api.eu-west-1.amazonaws.com/user',{
         method : 'PUT',
@@ -285,7 +286,7 @@ const Login = (props) => {
                               </Col>
                             </Row>
                             <FormGroup>
-                              <select class="custom-select" required="" value={register_prodcategory} onChange={handle_register_prodcategory}>
+                              <select className="custom-select" required="" value={register_prodcategory} onChange={handle_register_prodcategory}>
                                 <option value="">Catégorie de produit que vous vendez</option>
                                 <option value="1">Electronique</option>
                                 <option value="2">Bricolage</option>

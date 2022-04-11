@@ -11,12 +11,8 @@ import {
   CardBody,
   Button,
   Form,
-  FormGroup,
   Label,
   Input,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
 } from "reactstrap";
 
 
@@ -43,7 +39,7 @@ const  Live = (props) => {
                   <CardBody>
                   <Form 
                     className="needs-validation" 
-                    novalidate=""
+                    noValidate=""
                     onSubmit={handleSubmit(onSubmit)}
                   >
                       <div className="form-row">

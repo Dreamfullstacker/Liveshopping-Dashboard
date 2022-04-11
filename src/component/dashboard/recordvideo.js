@@ -1,7 +1,7 @@
 import React, { Fragment , useEffect, useState} from 'react';
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Breadcrumb from '../common/breadcrumb/breadcrumb' 
-import {Container,Row,Col,Card,CardHeader,CardBody} from 'reactstrap';
+import {Container,Row,Col,Card, CardBody} from 'reactstrap';
 import { isEmpty } from "lodash"
 import styles from "./AdminVideo.module.css";
 import VideoPlayer from "./VideoPlayer/VideoPlayer";
@@ -9,12 +9,8 @@ import API from "../../get-video-api";
 import {
     Button,
     Form,
-    FormGroup,
     Label,
     Input,
-    InputGroup,
-    InputGroupAddon,
-    InputGroupText,
   } from "reactstrap";
 
 import * as config from "../../config";
@@ -73,7 +69,7 @@ const  Sample = () => {
     const [videoSubtitle, setVideoSubtitle] = useState("");
     const [formChanged, setFormChanged] = useState(false);
     const [selectedThumbnail, setSelectedThumbnail] = useState("");
-    const [showPreview, setShowPreview] = useState(false);
+    // const [showPreview, setShowPreview] = useState(false);
 
     const [response, setResponse] = useState(false);
     const [apiFetched, setApiFetched] = useState(false);
