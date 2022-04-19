@@ -9,7 +9,6 @@ import {
   CardBody,
   Button,
   Form,
-  Label,
   Input,
 
 } from "reactstrap";
@@ -33,6 +32,8 @@ const  Sample = (props) => {
       })
       .then(response => response.json())
       .then((json)=> {
+        console.log(json)
+        if(json){
         currentUserdata = json.Item
         set_customer_username(currentUserdata.username)
         set_customer_bio(currentUserdata.bio)
@@ -46,7 +47,7 @@ const  Sample = (props) => {
         set_customer_codepostal(currentUserdata.codepostal)
         set_customer_pays(currentUserdata.pays)
         set_customer_introstore(currentUserdata.introstore)
-
+        }
       })
       ;
     }catch(err){

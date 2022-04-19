@@ -41,7 +41,7 @@ const Root = (props) =>  {
     // app.auth().onAuthStateChanged(setCurrentUser);
     console.ignoredYellowBox = ['Warning: Each', 'Warning: Failed'];
     console.disableYellowBox = true;    
-    console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',localStorage.getItem('currentUser'))
+    console.log('currentUser',localStorage.getItem('currentUser'))
     return function cleanup() {
       abortController.abort();
     }
