@@ -5,7 +5,6 @@ import {Container,Row,Col,Card, CardBody} from 'reactstrap';
 import { isEmpty } from "lodash"
 import styles from "./AdminVideo.module.css";
 import VideoPlayer from "./VideoPlayer/VideoPlayer";
-import API from "../../get-video-api";
 import {
     Button,
     Form,
@@ -63,56 +62,41 @@ function ThumbnailRadio(props) {
   }
 
 const  Sample = () => {
-
+    var currentUser = JSON.parse(localStorage.getItem('currentUser'));
     let { id } = useParams();
     const [videoTitle, setVideoTitle] = useState("");
     const [videoSubtitle, setVideoSubtitle] = useState("");
     const [formChanged, setFormChanged] = useState(false);
     const [selectedThumbnail, setSelectedThumbnail] = useState("");
+    const [videoURL, setVideoURL] = useState('');
     // const [showPreview, setShowPreview] = useState(false);
 
     const [response, setResponse] = useState(false);
     const [apiFetched, setApiFetched] = useState(false);
 
     const fetchAPI = () => {
-        // Call API and set the matched value if we're mounted
-        if (config.USE_MOCK_DATA && config.USE_MOCK_DATA === true){
-          const API_RETURN = API.vods.find((vod) => vod.id === id);;
-          setResponse(API_RETURN);
-          setVideoTitle(API_RETURN.title);
-          setVideoSubtitle(API_RETURN.subtitle);
-          setSelectedThumbnail(API_RETURN.thumbnail);
-          setApiFetched(true);
-        } else {
-          const getVideoUrl = `${config.API_URL}/video/${id}`;
-          fetch(getVideoUrl)
-            .then(function (response) {
-              if (response.ok) {
-                setApiFetched(true);
-                return response.json()
-              }
-              else {
-                return null;
-              }
-            })
-            .then((res) => {
-              if (!response && res) {
-                setResponse(res);
-                setVideoTitle(res.title);
-                setVideoSubtitle(res.subtitle);
-                setSelectedThumbnail(res.thumbnail);
-                setApiFetched(true);
-                console.log(res.playbackUrl)
-              }
-              else {
-                setResponse(null)
-              }
-            })
-            .catch((error) => {
-              console.error(error);
-            });
-        }
-    }
+      // Call API and set the matched value if we're mounted
+      const getVideoUrl = `${config.API_URL}/channel/${currentUser.username}/video/${id}`;
+      fetch(getVideoUrl)
+        .then(response => response.json())
+        .then((json) => {
+          if (json.Item) {
+            setResponse(json.Item);
+            setVideoTitle(json.Item.Title);
+            setVideoSubtitle(json.Item.SubTitle);
+            setSelectedThumbnail(json.Item.CurrentThumbnail);
+            setVideoURL(json.Item.PlaybackUrl);
+            setApiFetched(true);
+            console.log(json.Item.PlaybackUrl)
+          }
+          else {
+            setResponse(null)
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+      }
     useEffect(() => {
         // Set mounted to true so that we know when first mount has happened
         let mounted = true;
@@ -149,11 +133,7 @@ const  Sample = () => {
           thumbnail: selectedThumbnail,
         };
         // Update API
-    
-        if (config.USE_MOCK_DATA && config.USE_MOCK_DATA === true) {
-          putAPI(payload);
-        } else {
-          const putVideoUrl = `${config.API_URL}/video/${id}`;
+          const putVideoUrl = `${config.API_URL}/channel/${currentUser.username}/video/${id}`;
           fetch(putVideoUrl, {
             method: 'PUT',
             body: JSON.stringify(payload)
@@ -166,17 +146,21 @@ const  Sample = () => {
           .catch((error) => {
             console.error(error);
           });
-        }
         // Hide save
         setFormChanged(false);
     };
     
     const handleKeyPress = (event) => {
         if (event.key === "Enter") {
+          event.preventDefault()
           handleSave();
         }
     };
 
+    const handleSaveBtn = (e) => {
+      e.preventDefault()
+      handleSave();
+    }
     if (response === null) return <NotFoundError/>
     if (isEmpty(response)) return (
         <section className="full-width screen-height fl fl-j-center fl-a-center">
@@ -196,34 +180,34 @@ const  Sample = () => {
                             <VideoPlayer
                                 controls={true}
                                 muted={true}
-                                videoStream={response.playbackUrl}
+                                videoStream={response.PlaybackUrl}
                             />
                             <section className="pt-2">
                                 <h3>Thumbnail</h3>
                                 <fieldset className={styles.thumbnailSelectors} style = {{border : "none"}}>
                                 <ThumbnailRadio
-                                    id={response.thumbnails[0]}
+                                    id={response.Thumbnails[0]}
                                     name={"thumbnail"}
-                                    value={response.thumbnails[0]}
-                                    checked={selectedThumbnail === `${response.thumbnails[0]}`}
+                                    value={response.Thumbnails[0]}
+                                    checked={selectedThumbnail === `${response.Thumbnails[0]}`}
                                     onChange={handleThumbnailChange}
-                                    thumbnail={response.thumbnails[0]}
+                                    thumbnail={response.Thumbnails[0]}
                                 />
                                 <ThumbnailRadio
-                                    id={response.thumbnails[1]}
+                                    id={response.Thumbnails[1]}
                                     name={"thumbnail"}
-                                    value={response.thumbnails[1]}
-                                    checked={selectedThumbnail === `${response.thumbnails[1]}`}
+                                    value={response.Thumbnails[1]}
+                                    checked={selectedThumbnail === `${response.Thumbnails[1]}`}
                                     onChange={handleThumbnailChange}
-                                    thumbnail={response.thumbnails[1]}
+                                    thumbnail={response.Thumbnails[1]}
                                 />
                                 <ThumbnailRadio
-                                    id={response.thumbnails[2]}
+                                    id={response.Thumbnails[2]}
                                     name={"thumbnail"}
-                                    value={response.thumbnails[2]}
-                                    checked={selectedThumbnail === `${response.thumbnails[2]}`}
+                                    value={response.Thumbnails[2]}
+                                    checked={selectedThumbnail === `${response.Thumbnails[2]}`}
                                     onChange={handleThumbnailChange}
-                                    thumbnail={response.thumbnails[2]}
+                                    thumbnail={response.Thumbnails[2]}
                                 />
                                 </fieldset>
                             </section>
@@ -255,7 +239,7 @@ const  Sample = () => {
                                             onKeyPress={handleKeyPress}
                                         />
                                     </div>
-                                    <Button>Save Change</Button>
+                                    <Button onClick={handleSaveBtn}>Save Change</Button>
                                 </Form>
                             </fieldset>
                         </Col>

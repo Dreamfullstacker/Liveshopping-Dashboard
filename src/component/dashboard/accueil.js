@@ -19,25 +19,19 @@ function sortByKey(array, key) {
 const  Sample = (props) => {
   const [response, setResponse] = useState({});
   const [timerID, setTimerID] = useState(false);
-
+  var currentUser = JSON.parse(localStorage.getItem('currentUser'));
   const fetchAPI = () => {
     // Call API and set the matched value if we're mounted
-    if (config.USE_MOCK_DATA && config.USE_MOCK_DATA === true){
-      const vods = API.vods;
-      setResponse(vods);
-    } else {
-      const getVideosUrl = `${config.API_URL}/videos`;
-
-      fetch(getVideosUrl)
-      .then(response => response.json())
-      .then((res) => {
-        const sortedVods = sortByKey(res.vods, "created_on")
-        setResponse(sortedVods);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-    }
+    const getVideosUrl = `${config.API_URL}/channel/${currentUser.username}/video`;
+    fetch(getVideosUrl)
+    .then(response => response.json())
+    .then((json) => {
+      const sortedVods = sortByKey(json.Items, "CreatedOn")
+      setResponse(sortedVods);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
   }
 
   useEffect(() => {
@@ -68,10 +62,13 @@ const  Sample = (props) => {
     const hintMeta = `${vod.views} views • ${time}`;
     formattedAPIResponse.push({
       id: vod.id,
-      title: vod.title,
-      subtitle: vod.subtitle,
-      hint: hintMeta,
-      thumbnailUrl: vod.thumbnail,
+      title: vod.Title,
+      subtitle: vod.Subtitle,
+      date : vod.CreatedOn,
+      length : vod.Length,
+      // hint: hintMeta,
+      thumbnailUrl: vod.CurrentThumbnail,
+      viewer : vod.Viewers
     });
   }
 
@@ -127,7 +124,9 @@ const  Sample = (props) => {
                         {/* </a> */}
                         <figcaption itemProp="caption description">{v.title}</figcaption>
                         <figcaption itemProp="caption description">{v.subtitle}</figcaption>
-                        <figcaption itemProp="caption description">Date : 01/01/2022</figcaption>
+                        <figcaption itemProp="caption description">Date : {v.date}</figcaption>
+                        <figcaption itemProp="caption description">Length : {v.length}</figcaption>
+                        <figcaption itemProp="caption description">Viewer : {v.viewer}</figcaption>
                         </Link>
                       </figure>
                       
