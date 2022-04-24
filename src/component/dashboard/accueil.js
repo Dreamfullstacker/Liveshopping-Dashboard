@@ -17,7 +17,8 @@ function sortByKey(array, key) {
 }
 
 const  Sample = (props) => {
-  const [response, setResponse] = useState({});
+  const [scheduledresponse, setScheduledResponse] = useState({});
+  const [recordedresponse, setRecordedResponse] = useState({});
   const [timerID, setTimerID] = useState(false);
   var currentUser = JSON.parse(localStorage.getItem('currentUser'));
   const fetchAPI = () => {
@@ -26,8 +27,29 @@ const  Sample = (props) => {
     fetch(getVideosUrl)
     .then(response => response.json())
     .then((json) => {
-      const sortedVods = sortByKey(json.Items, "CreatedOn")
-      setResponse(sortedVods);
+      var Videos = []
+      var recordedVideos = [];
+      var scheduledVideos = [];
+      json.Items.map((video) => {
+        if(video.Scheduled_Statu == false)
+        {
+          recordedVideos.push(video);
+        }
+        else
+        {
+          scheduledVideos.push(video);
+        }
+      })
+      Videos.push(recordedVideos);
+      Videos.push(scheduledVideos);
+      return Videos
+    })
+    .then(Videos => {
+      console.log(Videos)
+      const sortedScheduledVods = sortByKey(Videos[0], "CreatedOn")
+      const sortedRecordedVods = sortByKey(Videos[1], "CreatedOn")
+      setScheduledResponse(sortedScheduledVods);
+      setRecordedResponse(sortedRecordedVods);
     })
     .catch((error) => {
       console.error(error);
@@ -37,7 +59,7 @@ const  Sample = (props) => {
   useEffect(() => {
     // Set mounted to true so that we know when first mount has happened
     let mounted = true;
-
+    console.log(currentUser.state_disable)
     if (!timerID && mounted) {
       fetchAPI();
       const timer = setInterval(() => {
@@ -53,14 +75,14 @@ const  Sample = (props) => {
     }
   }, [timerID])
 
-  const formattedAPIResponse = [];
+  const formattedScheduleAPIResponse = [];
 
   // Format Thumbnail, title, subtitle, hint into array of objects
-  for (let index = 0; index < response.length; index++) {
-    const vod = response[index];
+  for (let index = 0; index < scheduledresponse.length; index++) {
+    const vod = scheduledresponse[index];
     const time = FormatTimestamp(vod.length);
     const hintMeta = `${vod.views} views • ${time}`;
-    formattedAPIResponse.push({
+    formattedScheduleAPIResponse.push({
       id: vod.id,
       title: vod.Title,
       subtitle: vod.Subtitle,
@@ -69,6 +91,22 @@ const  Sample = (props) => {
       // hint: hintMeta,
       thumbnailUrl: vod.CurrentThumbnail,
       viewer : vod.Viewers
+    });
+  }
+  const formattedRecordAPIResponse = [];
+  for (let index = 0; index < recordedresponse.length; index++) {
+    const Rvod = recordedresponse[index];
+    const Rtime = FormatTimestamp(Rvod.length);
+    const RhintMeta = `${Rvod.views} views • ${Rtime}`;
+    formattedRecordAPIResponse.push({
+      id: Rvod.id,
+      title: Rvod.Title,
+      subtitle: Rvod.Subtitle,
+      date : "" + Rvod.Scheduled_date + "T" +Rvod.Scheduled_time,
+      length : Rvod.Length,
+      // hint: hintMeta,
+      thumbnailUrl: Rvod.CurrentThumbnail,
+      viewer : Rvod.Viewers
     });
   }
 
@@ -82,18 +120,26 @@ const  Sample = (props) => {
                   <CardHeader>
                     <div className='row justify-content-between'>
                       <h5>LIVE Vidéo Programmé</h5>
-                      <Link to = {'live'}><Button>Create New Live</Button></Link>
+                      {currentUser.state_disable == true ?
+                        <Link to = {'live'}><Button>Create New Live</Button></Link>
+                        :
+                        <></>
+                      }
                     </div>
                     
                   </CardHeader>
-                  <CardBody>
-                    <figure className="col-xl-3 col-md-4 col-6" itemProp="associatedMedia" itemScope="">
-                      <a href="dashboard" itemProp="contentUrl" data-size="1600x950">
-                        <img className="img-thumbnail" src={require('../../assets/images/lightgallry/01.png')} itemProp="thumbnail" alt="Image description"></img>
-                      </a>
-                      <figcaption itemProp="caption description">Titre de la vidéo programmée</figcaption>
-                      <figcaption itemProp="caption description">Date : 01/01/2022</figcaption>
-                    </figure>
+                  <CardBody className='row'>
+                    {formattedRecordAPIResponse.map((v, i) => {
+                      return (
+                        <figure className="col-xl-3 col-md-4 col-6" itemProp="associatedMedia" itemScope="">
+                          <a href="dashboard" itemProp="contentUrl" data-size="1600x950">
+                            <img className="img-thumbnail" src={require('../../assets/images/lightgallry/01.png')} itemProp="thumbnail" alt="Image description"></img>
+                          </a>
+                          <figcaption itemProp="caption description">Titre : {v.title}</figcaption>
+                          <figcaption itemProp="caption description">Schedule Date : {v.date}</figcaption>
+                        </figure>
+                      );
+                    })}
                   </CardBody>
                 </Card>
               </Col>
@@ -105,7 +151,7 @@ const  Sample = (props) => {
                     <h5>LIVE Vidéo Terminé</h5>
                   </CardHeader>
                   <CardBody className='row'>
-                  {formattedAPIResponse.map((v, i) => {
+                  {formattedScheduleAPIResponse.map((v, i) => {
                     return (
                       // <VodCard
                       //   key={v.id}
