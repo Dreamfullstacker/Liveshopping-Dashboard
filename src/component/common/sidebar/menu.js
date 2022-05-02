@@ -26,4 +26,11 @@ export const MENUITEMS = [
         ]
         
     },
+    {
+        title: 'LiveShow', icon: <i className="pe-7s-news-paper"></i>,  path: '/dashboard/liveshow', type: 'sub',active: false, children: [
+                {title: 'Ticket', type: 'sub'},
+                { title: 'Raise Ticket', type: 'exteral_link', path: '/dashboard/liveshow' },
+        ]
+        
+    },
 ]
