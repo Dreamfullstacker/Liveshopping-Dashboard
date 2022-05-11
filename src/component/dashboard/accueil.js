@@ -102,7 +102,7 @@ const  Sample = (props) => {
       id: Rvod.id,
       title: Rvod.Title,
       subtitle: Rvod.Subtitle,
-      date : "" + Rvod.Scheduled_date + "T" +Rvod.Scheduled_time,
+      date : "" + Rvod.Scheduled_date,
       length : Rvod.Length,
       // hint: hintMeta,
       thumbnailUrl: Rvod.CurrentThumbnail,

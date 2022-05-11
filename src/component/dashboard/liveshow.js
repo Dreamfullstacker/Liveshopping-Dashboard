@@ -2,18 +2,33 @@ import React, {useState, useEffect, Fragment } from 'react';
 import Breadcrumb from '../common/breadcrumb/breadcrumb' 
 import {Container,Row,Col,Card,CardHeader,CardBody} from 'reactstrap';
 import Videoplayer from './VideoPlayer/VideoPlayer'
-
+import * as config from "../../config";
 
 const  Liveshow = (props) => {
     const [timerID, setTimerID] = useState(false);
+    const [productions, setProductions] = useState('')
     var currentUser = JSON.parse(localStorage.getItem('currentUser'));
     const checkVideoState = () => {
-        
+        // Call API and set the matched value if we're mounted
+        const getVideosUrl = `${config.API_URL}/channel/${currentUser.username}/l_video`;
+        fetch(getVideosUrl)
+        .then(response => response.json())
+        .then((json) => {
+          setProductions(json.Productions)
+          console.log(json.Productions);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+      }
+    function addProduction (i) {
+        // e.preventDefault();
+        console.log(productions[i]);
     }
     useEffect(() => {
         // Set mounted to true so that we know when first mount has happened
         let mounted = true;
-        console.log(currentUser.state_disable)
+        // console.log(currentUser.state_disable)
         if (!timerID && mounted) {
             checkVideoState();
           const timer = setInterval(() => {
@@ -46,7 +61,23 @@ const  Liveshow = (props) => {
                             </Row>
                         </CardHeader>
                         <CardBody>
-                            <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
+                            <Row>
+                            {
+                                productions?
+                                productions.map((production , i) => {
+                                    return (
+                                        <Col sm = "2" onClick={() => addProduction(i)}>
+                                            <img  src={production.production_item_image_path} alt="Image description" style={{width : "100%", height : "auto"}}></img>
+                                            <p>Productioin Name : {production.production_item_name}</p>
+                                            <p>Productioin Price : {production.production_item_price}</p>
+                                        </Col>
+                                    
+                                    );
+                                })
+                                :
+                                <p>"erunt mollit anim id est laborum."</p>
+                            }
+                            </Row>
                         </CardBody>
                     </Card>
                 </Col>
