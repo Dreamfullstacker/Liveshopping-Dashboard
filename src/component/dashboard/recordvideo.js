@@ -176,12 +176,14 @@ const  Sample = () => {
                 <Card>
                   <CardBody>
                     <Row>
-                        <Col sm="12" md="8">
+                        <Col sm="12" md="6">
                             <VideoPlayer
                                 controls={true}
                                 muted={true}
                                 videoStream={response.PlaybackUrl}
                             />
+                        </Col>
+                        <Col sm="12" md="3">
                             <section className="pt-2">
                                 <h3>Thumbnail</h3>
                                 <fieldset className={styles.thumbnailSelectors} style = {{border : "none"}}>
@@ -212,7 +214,7 @@ const  Sample = () => {
                                 </fieldset>
                             </section>
                         </Col>
-                        <Col sm="12" md="4">
+                        <Col sm="12" md="3">
                             <fieldset style={{border : "none"}}>
                                 <Form>
                                     <div className="form-row my-3">

@@ -20,7 +20,7 @@
 @media (max-width: 480px) {
   /* Smaller Screens */
   :root {
-    --video-width: 100%;
+    --video-width: 100rem;
   }
 }
 

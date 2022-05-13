@@ -30,11 +30,11 @@ class VideoPlayer extends Component {
     // Here, we load videojs, IVS tech, and the IVS quality plugin
     // These must be prefixed with window. because they are loaded to the window context
     // in web-ui/public.
-    console.log('videojs')
+    // console.log('videojs')
     const videojs = window.videojs,
       registerIVSTech = window.registerIVSTech,
       registerIVSQualityPlugin = window.registerIVSQualityPlugin;
-      console.log(videojs)
+      // console.log(videojs)
     // Set up IVS playback tech and quality plugin
     if (registerIVSTech && registerIVSQualityPlugin) {
       registerIVSTech(videojs);
