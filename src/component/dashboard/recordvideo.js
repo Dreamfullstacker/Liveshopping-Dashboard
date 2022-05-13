@@ -81,7 +81,6 @@ const  Sample = () => {
         .then(response => response.json())
         .then((json) => {
           if (json.Item) {
-            console.log(json.Item)
             setResponse(json.Item);
             setVideoTitle(json.Item.Title);
             setVideoSubtitle(json.Item.SubTitle);
@@ -216,6 +215,14 @@ const  Sample = () => {
                         <Col sm="12" md="4">
                             <fieldset style={{border : "none"}}>
                                 <Form>
+                                    <div className="form-row my-3">
+                                      <Label htmlFor="title" className='h3'>Video PlaybackUrl</Label>
+                                      <Input className="form-control"
+                                          type="text"
+                                          name="title"
+                                          value={videoURL}
+                                      />
+                                    </div>
                                     <div className="form-row my-3">
                                         <Label htmlFor="title" className='h3'>Video title</Label>
                                         <Input className="form-control"
