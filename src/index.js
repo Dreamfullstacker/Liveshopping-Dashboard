@@ -105,7 +105,7 @@ const Root = (props) =>  {
               path={`${process.env.PUBLIC_URL}/pages/comingsoon-bg-video`}
               component={ComingsoonVideo}
             ></Route>
-            {localStorage.getItem('currentUser') !== 'null' ? (
+            {localStorage.getItem('currentUser') !== null || localStorage.getItem('currentUser') !== 'empty'? (
               <App>
                 <Route
                   exact

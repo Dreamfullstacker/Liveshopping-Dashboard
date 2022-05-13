@@ -81,6 +81,7 @@ const  Sample = () => {
         .then(response => response.json())
         .then((json) => {
           if (json.Item) {
+            console.log(json.Item)
             setResponse(json.Item);
             setVideoTitle(json.Item.Title);
             setVideoSubtitle(json.Item.SubTitle);

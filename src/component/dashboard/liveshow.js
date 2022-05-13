@@ -7,6 +7,7 @@ import * as config from "../../config";
 const  Liveshow = (props) => {
     const [timerID, setTimerID] = useState(false);
     const [productions, setProductions] = useState('')
+    const [channelArn, setChannelArn] = useState('')
     var currentUser = JSON.parse(localStorage.getItem('currentUser'));
     const checkVideoState = () => {
         // Call API and set the matched value if we're mounted
@@ -23,7 +24,30 @@ const  Liveshow = (props) => {
       }
     function addProduction (i) {
         // e.preventDefault();
-        console.log(productions[i]);
+        console.log(productions[i], channelArn);
+        let current_prod = productions[i]
+        try{
+            fetch(`${config.API_URL}/channel/${currentUser.username}/l_video`,{
+              method : 'PUT',
+              header : {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                production_item_articleURL : current_prod.production_item_articleURL,
+                production_item_delivery : current_prod.production_item_delivery,
+                production_item_description : current_prod.production_item_description,
+                production_item_discount : current_prod.production_item_discount,
+                production_item_image_path : current_prod.production_item_image_path,
+                production_item_name : current_prod.production_item_name,
+                production_item_price : current_prod.production_item_price,
+                channel_arn : channelArn,
+              })
+            })
+            .then(response => console.log(response.json()))
+            ;
+          }catch(err){
+            console.log(err)
+          }
     }
     useEffect(() => {
         // Set mounted to true so that we know when first mount has happened
@@ -43,6 +67,18 @@ const  Liveshow = (props) => {
           clearInterval(timerID);
         }
       }, [timerID])
+    useEffect(()=>{
+        const getChannelUrl = `${config.API_URL}/channel/${currentUser.username}`;
+        fetch(getChannelUrl)
+        .then(response => response.json())
+        .then((json) => {
+          console.log(json.Item.channel_arn);
+          setChannelArn(json.Item.channel_arn)
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    },[])
     return (
          <Fragment>
          <Container fluid={true} style={{paddingTop : '20px'}}>
@@ -75,7 +111,7 @@ const  Liveshow = (props) => {
                                     );
                                 })
                                 :
-                                <p>"erunt mollit anim id est laborum."</p>
+                                <p>There are no current live stream...</p>
                             }
                             </Row>
                         </CardBody>

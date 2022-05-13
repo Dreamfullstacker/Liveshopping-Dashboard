@@ -167,6 +167,7 @@ const  Live = (props) => {
       })
       .then(response => response.json())
       .then((json)=> {
+        console.log(json)
         setCurrentChannelInfo(json.Item)
       })
     } catch (error) {
@@ -443,14 +444,21 @@ const  Live = (props) => {
                       <div className="form-row">
                         <Col md="12 mb-6">
                           <Label htmlFor="validationCustom03">Serveur RTMP</Label>
-                          <Input className="form-control" id="validationCustom03" type="text" placeholder="rtmps://8be14badebca.global-contribute.live-video.net:443/app/" required="" value={currentChannelinfo.channel_ingestserver}/>
+                          <Input className="form-control" type="text" placeholder="rtmps://8be14badebca.global-contribute.live-video.net:443/app/" required="" value={currentChannelinfo.channel_ingestserver}/>
                         </Col>
                       </div>
 
                       <div className="form-row">
                         <Col md="12 mb-6">
                           <Label htmlFor="validationCustom03">Clé de stream</Label>
-                          <Input className="form-control" id="validationCustom03" type="text" placeholder="sk_eu-west-1_J7RjK5VttCW6_smPa4C8khzuGjCAaZ8bJE2AdniEG4i" required="" value={currentChannelinfo.streamkey}/>
+                          <Input className="form-control" type="text" placeholder="sk_eu-west-1_J7RjK5VttCW6_smPa4C8khzuGjCAaZ8bJE2AdniEG4i" required="" value={currentChannelinfo.streamkey}/>
+                        </Col>
+                      </div>
+
+                      <div className="form-row">
+                        <Col md="12 mb-6">
+                          <Label htmlFor="validationCustom03">Playback URL</Label>
+                          <Input className="form-control" type="text" placeholder="https://6978a891354b.eu-west-1.playback.live-video.net/api/video/v1/eu-west-1.263504711656.channel.ON1mIX5kLymP.m3u8" required="" value={currentChannelinfo.channel_playbackURL}/>
                         </Col>
                       </div>
                     </Form>
