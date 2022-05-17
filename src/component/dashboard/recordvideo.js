@@ -64,6 +64,7 @@ const  Sample = () => {
     const [selectedThumbnail, setSelectedThumbnail] = useState("");
     const [videoURL, setVideoURL] = useState('');
     // const [showPreview, setShowPreview] = useState(false);
+    const [metadata, setMetadata] = useState('');
 
     const [response, setResponse] = useState(false);
     const [apiFetched, setApiFetched] = useState(false);
@@ -161,6 +162,10 @@ const  Sample = () => {
         <h1> Loading ...</h1>
         </section>
     )
+
+    const handleTimeMetadataEvent = (data) => {
+      console.log("first test", data);
+    }
     return (
          <Fragment>
          <Breadcrumb parent="Dashboard / recordedvideo" title={id} caption1 = "Recorded" caption2 = "Video" description = ""/>
@@ -175,6 +180,7 @@ const  Sample = () => {
                                 controls={true}
                                 muted={true}
                                 videoStream={response.PlaybackUrl}
+                                handletimemetadata = {handleTimeMetadataEvent}
                             />
                         </Col>
                         <Col sm="12" md="3">

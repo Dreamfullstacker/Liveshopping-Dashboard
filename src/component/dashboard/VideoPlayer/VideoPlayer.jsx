@@ -47,19 +47,20 @@ const VideoPlayer = (props) => {
     });
     player.addEventListener(PlayerEventType.TEXT_METADATA_CUE, (cue) => {
         console.log('Timed metadata: ', cue.text);
-        const metadataText = JSON.parse(cue.text);
-        const productId = metadataText['productId'];
-        props.setMetadataId(productId);
-        const metadataTime = player.getPosition().toFixed(2);
+        props.handletimemetadata(cue.text);
+        // const metadataText = JSON.parse(cue.text);
+        // const productId = metadataText['productId'];
+        // props.setMetadataId(productId);
+        // const metadataTime = player.getPosition().toFixed(2);
 
-        let metaD = metaData;
-        // only keep max 5 metadata records
-        if (metaD.length > maxMetaData) {
-          metaD.length = maxMetaData;
-        }
-        // insert new metadata
-        metaD.unshift(`productId: ${productId} (${metadataTime}s)`);
-        setMetaData(metaD)
+        // let metaD = metaData;
+        // // only keep max 5 metadata records
+        // if (metaD.length > maxMetaData) {
+        //   metaD.length = maxMetaData;
+        // }
+        // // insert new metadata
+        // metaD.unshift(`productId: ${productId} (${metadataTime}s)`);
+        // setMetaData(metaD)
     });
 
     // Setup stream and play

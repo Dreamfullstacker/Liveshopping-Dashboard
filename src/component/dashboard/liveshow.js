@@ -1,7 +1,7 @@
 import React, {useState, useEffect, Fragment } from 'react';
 import Breadcrumb from '../common/breadcrumb/breadcrumb' 
 import {Container,Row,Col,Card,CardHeader,CardBody} from 'reactstrap';
-import Videoplayer from './VideoPlayer/VideoPlayer'
+import Videoplayer from './VideoPlayer/LiveVideoPlayer'
 import * as config from "../../config";
 
 const  Liveshow = (props) => {
