@@ -131,7 +131,7 @@ const  Sample = (props) => {
                   <CardBody className='row'>
                     {formattedRecordAPIResponse.map((v, i) => {
                       return (
-                        <figure className="col-xl-3 col-md-4 col-6" itemProp="associatedMedia" itemScope="">
+                        <figure className="col-xl-3 col-md-4 col-6" itemProp="associatedMedia" itemScope="" key={i}>
                           <a href="dashboard" itemProp="contentUrl" data-size="1600x950">
                             <img className="img-thumbnail" src={require('../../assets/images/lightgallry/01.png')} itemProp="thumbnail" alt="Image description"></img>
                           </a>

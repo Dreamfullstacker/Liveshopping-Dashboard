@@ -1,88 +1,111 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: MIT-0
 
-import "./VideoPlayer.css";
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
-class VideoPlayer extends Component {
-  componentDidMount() {
-    this.initVideo();
-  }
+// Styles
+import './VideoPlayer.css';
 
-  componentDidUpdate(prevProps) {
-    // Change player src when props change
-    if (this.props.videoStream !== prevProps.videoStream) {
-      this.player.src(this.props.videoStream);
-    }
-  }
+const VideoPlayer = (props) => {
+  const [hover, setHover] = useState(false)
+  const maxMetaData = 10;
+  const [metaData, setMetaData] = useState([]);
 
-  componentWillUnmount() {
-    this.destroyVideo();
-  }
+  const mediaPlayerScriptLoaded = () => {
+    // This shows how to include the Amazon IVS Player with a script tag from our CDN
+    // If self hosting, you may not be able to use the create() method since it requires
+    // that file names do not change and are all hosted from the same directory.
 
-  destroyVideo() {
-    if (this.player) {
-      this.player.dispose();
-      this.player = null;
-    }
-  }
+    const MediaPlayerPackage = window.IVSPlayer;
 
-  initVideo() {
-    // Here, we load videojs, IVS tech, and the IVS quality plugin
-    // These must be prefixed with window. because they are loaded to the window context
-    // in web-ui/public.
-    // console.log('videojs')
-    const videojs = window.videojs,
-      registerIVSTech = window.registerIVSTech,
-      registerIVSQualityPlugin = window.registerIVSQualityPlugin;
-      // console.log(videojs)
-    // Set up IVS playback tech and quality plugin
-    if (registerIVSTech && registerIVSQualityPlugin) {
-      registerIVSTech(videojs);
-      registerIVSQualityPlugin(videojs);
+    // First, check if the browser supports the Amazon IVS player.
+    if (!MediaPlayerPackage.isPlayerSupported) {
+        console.warn("The current browser does not support the Amazon IVS player.");
+        return;
     }
 
-    const videoJsOptions = {
-      techOrder: ["AmazonIVS"],
-      autoplay: true,
-      muted: this.props.muted,
-      controlBar: {
-        pictureInPictureToggle: false,
-      },
-    };
+    const PlayerState = MediaPlayerPackage.PlayerState;
+    const PlayerEventType = MediaPlayerPackage.PlayerEventType;
 
-    // instantiate video.js
-    this.player = videojs("amazon-ivs-videojs", videoJsOptions);
-    this.player.ready(this.handlePlayerReady);
-    // expose event for other components using it
-    this.player.ready(this.props.onPlay);
-    
+    // Initialize player
+    const player = MediaPlayerPackage.create();
+    player.attachHTMLVideoElement(document.getElementById("video-player"));
+
+    // Attach event listeners
+    player.addEventListener(PlayerState.PLAYING, () => {
+        console.log("Player State - PLAYING");
+    });
+    player.addEventListener(PlayerState.ENDED, () => {
+        console.log("Player State - ENDED");
+    });
+    player.addEventListener(PlayerState.READY, () => {
+        console.log("Player State - READY");
+    });
+    player.addEventListener(PlayerEventType.ERROR, (err) => {
+        console.warn("Player Event - ERROR:", err);
+    });
+    player.addEventListener(PlayerEventType.TEXT_METADATA_CUE, (cue) => {
+        console.log('Timed metadata: ', cue.text);
+        const metadataText = JSON.parse(cue.text);
+        const productId = metadataText['productId'];
+        props.setMetadataId(productId);
+        const metadataTime = player.getPosition().toFixed(2);
+
+        let metaD = metaData;
+        // only keep max 5 metadata records
+        if (metaD.length > maxMetaData) {
+          metaD.length = maxMetaData;
+        }
+        // insert new metadata
+        metaD.unshift(`productId: ${productId} (${metadataTime}s)`);
+        setMetaData(metaD)
+    });
+
+    // Setup stream and play
+    player.setAutoplay(true);
+    player.load(props.videoStream);
+    player.setVolume(0.5);
   }
+  
+  useEffect(() => {
+    const mediaPlayerScript = document.createElement("script");
+    mediaPlayerScript.src = "https://player.live-video.net/1.7.0/amazon-ivs-player.min.js";
+    mediaPlayerScript.async = true;
+    mediaPlayerScript.onload = () => mediaPlayerScriptLoaded();
+    document.body.appendChild(mediaPlayerScript);
+  }, [])
 
-  handlePlayerReady = () => {
-    this.player.enableIVSQualityPlugin();
-    this.player.src(this.props.videoStream);
-    this.player.play();
-  };
 
-  render() {
+  const renderMetaData = () => {
+    const metaDataItems = metaData.map(element => (
+      <div className="video-metadata-item" key={element}>{element}</div>
+    ));
     return (
-      <div className="video-container">
-        <video
-          id="amazon-ivs-videojs"
-          className="video-js vjs-fluid vjs-big-play-centered"
-          controls={this.props.controls}
-          playsInline
-        ></video>
+      <div className="video-metadata-container pd-x-1 pd-y-05 pos-absolute bg-inverted br-all-sm color-inverted">
+        {metaDataItems}
       </div>
-    );
+    )
   }
+
+  return (
+    <div
+      className="video-container pos-relative"
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      style = {{height : "100%"}}
+    >
+      {hover && renderMetaData()}
+      <div className="aspect-169 pos-relative full-width full-height"  style = {{height : "100%"}}>
+        <video id="video-player" className="video-elem br-all pos-absolute full-width" playsInline muted style={{width : "100%", height : '100%'}}></video>
+      </div>
+    </div>
+  )
 }
 
 VideoPlayer.propTypes = {
+  setMetadataId: PropTypes.func,
   videoStream: PropTypes.string,
-  controls: PropTypes.bool,
-  muted: PropTypes.bool,
-  onPlay : PropTypes.func
 };
 
 export default VideoPlayer;

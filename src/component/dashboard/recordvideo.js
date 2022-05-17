@@ -213,7 +213,7 @@ const  Sample = () => {
                                 <Form>
                                     <div className="form-row my-3">
                                       <Label htmlFor="title" className='h3'>Video PlaybackUrl</Label>
-                                      <Input className="form-control"
+                                      <Input readOnly className="form-control"
                                           type="text"
                                           name="title"
                                           value={videoURL}
@@ -248,7 +248,9 @@ const  Sample = () => {
                             </fieldset>
                         </Col>
                     </Row>
-                    
+                    <Row className='pt-3'>
+                      <h3>Time metad productions</h3>
+                    </Row>
                   </CardBody>
                 </Card>
               </Col>
