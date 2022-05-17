@@ -1,6 +1,5 @@
 import React, {useState, useEffect, Fragment } from 'react';
 import Breadcrumb from '../common/breadcrumb/breadcrumb' 
-import { useForm } from "react-hook-form";
 import {
   Container,
   Row,
@@ -97,18 +96,18 @@ const  Live = (props) => {
   }
 
   const handelScheduleVideo = () => {
-    if(!scheduleVideo_title || !scheduleVideo_description || !scheduleVideo_host || agree_policy == false || videosourcetype == 0 || (videosourcetype==3 && !videosource)){
+    if(!scheduleVideo_title || !scheduleVideo_description || !scheduleVideo_host || agree_policy === false || videosourcetype === 0 || (videosourcetype===3 && !videosource)){
       if(!scheduleVideo_title)
         document.getElementById('invalid_title').style.display = 'block';
       if(!scheduleVideo_description)
         document.getElementById('invalid_description').style.display = 'block';
       if(!scheduleVideo_host)
         document.getElementById('invalid_host').style.display = 'block';
-      if(agree_policy == false)
+      if(agree_policy === false)
         document.getElementById("invalid_agree").style.display = "block";
-      if(videosourcetype == 0)
+      if(videosourcetype === 0)
         document.getElementById("invalid_videotype").style.display = "block";
-      if(videosourcetype==3 && !videosource){
+      if(videosourcetype===3 && !videosource){
         document.getElementById("invalid_filesource").style.display = "block"
         console.log("first")
 

@@ -14,12 +14,6 @@ import {
 
 import * as config from "../../config";
 
-function putAPI(payload) {
-    console.log("SAMPLE: PUT changes to api...");
-    console.log(payload);
-    console.log("=============================");
-  }
-
 function NotFoundError() {
     return (
         <>
