@@ -64,7 +64,7 @@ const  Sample = () => {
     const [selectedThumbnail, setSelectedThumbnail] = useState("");
     const [videoURL, setVideoURL] = useState('');
     // const [showPreview, setShowPreview] = useState(false);
-    const [metadata, setMetadata] = useState('');
+    const [metadata, setMetadata] = useState([]);
 
     const [response, setResponse] = useState(false);
     const [apiFetched, setApiFetched] = useState(false);
@@ -165,6 +165,7 @@ const  Sample = () => {
 
     const handleTimeMetadataEvent = (data) => {
       console.log("first test", data);
+      setMetadata([...metadata, JSON.parse(data)]);
     }
     return (
          <Fragment>
@@ -256,6 +257,15 @@ const  Sample = () => {
                     </Row>
                     <Row className='pt-3'>
                       <h3>Time metad productions</h3>
+                      {metadata.map((metadata_production, i) => {
+                        return (
+                          <figure className="col-xl-3 col-md-4 col-6" itemProp="associatedMedia" itemScope="" key={i}>
+                            <img className="img-thumbnail" src={`${metadata_production.production_item_image_path}`} itemProp="thumbnail" alt="Image description"></img>
+                            <figcaption itemProp="caption description">Name : {metadata_production.production_item_name}</figcaption>
+                            <figcaption itemProp="caption description">Schedule Date : {metadata_production.production_item_price}</figcaption>
+                          </figure>
+                        );
+                      })}
                     </Row>
                   </CardBody>
                 </Card>
