@@ -102,7 +102,7 @@ const  Liveshow = (props) => {
                                 productions?
                                 productions.map((production , i) => {
                                     return (
-                                        <Col sm = "2" onClick={() => addProduction(i)}>
+                                        <Col sm = "2" onClick={() => addProduction(i)} key={i}>
                                             <img  src={production.production_item_image_path} alt="Image description" style={{width : "100%", height : "auto"}}></img>
                                             <p>Productioin Name : {production.production_item_name}</p>
                                             <p>Productioin Price : {production.production_item_price}</p>

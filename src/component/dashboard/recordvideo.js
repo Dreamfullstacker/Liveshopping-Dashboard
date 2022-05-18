@@ -222,7 +222,7 @@ const  Sample = () => {
                                       <Label htmlFor="title" className='h3'>Video PlaybackUrl</Label>
                                       <Input readOnly className="form-control"
                                           type="text"
-                                          name="title"
+                                          name="playbackURL"
                                           value={videoURL}
                                       />
                                     </div>
@@ -257,15 +257,21 @@ const  Sample = () => {
                     </Row>
                     <Row className='pt-3'>
                       <h3>Time metad productions</h3>
+                      <div>
                       {metadata.map((metadata_production, i) => {
+                        console.log(metadata)
                         return (
                           <figure className="col-xl-3 col-md-4 col-6" itemProp="associatedMedia" itemScope="" key={i}>
                             <img className="img-thumbnail" src={`${metadata_production.production_item_image_path}`} itemProp="thumbnail" alt="Image description"></img>
                             <figcaption itemProp="caption description">Name : {metadata_production.production_item_name}</figcaption>
-                            <figcaption itemProp="caption description">Schedule Date : {metadata_production.production_item_price}</figcaption>
+                            <figcaption itemProp="caption description">Price : {metadata_production.production_item_price}</figcaption>
+                            <figcaption itemProp="caption description">Discount : {metadata_production.production_item_discount}</figcaption>
+                            <figcaption itemProp="caption description">Delivery : {metadata_production.production_item_delivery}</figcaption>
+                            <figcaption itemProp="caption description"><a href={`${metadata_production.production_item_articleURL}`}>Article URL : {metadata_production.production_item_articleURL}</a></figcaption>
                           </figure>
                         );
                       })}
+                      </div>
                     </Row>
                   </CardBody>
                 </Card>
