@@ -8,7 +8,9 @@ const  Liveshow = (props) => {
     const [timerID, setTimerID] = useState(false);
     const [productions, setProductions] = useState('')
     const [channelArn, setChannelArn] = useState('')
+    const [channelPlaybackURL, setChannelPlaybackURL] = useState("")
     var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    var videostream = ""
     const checkVideoState = () => {
         // Call API and set the matched value if we're mounted
         const getVideosUrl = `${config.API_URL}/channel/${currentUser.username}/l_video`;
@@ -74,6 +76,12 @@ const  Liveshow = (props) => {
         .then((json) => {
           console.log(json.Item.channel_arn);
           setChannelArn(json.Item.channel_arn)
+          console.log(typeof(json.Item.channel_playbackURL));
+          setChannelPlaybackURL(json.Item.channel_playbackURL)
+          videostream = json.Item.channel_playbackURL 
+        })
+        .then(()=>{
+          console.log(channelPlaybackURL)
         })
         .catch((error) => {
           console.error(error);
@@ -91,7 +99,8 @@ const  Liveshow = (props) => {
                                     <Videoplayer 
                                         controls={true}
                                         muted={true}
-                                        videoStream="https://6978a891354b.eu-west-1.playback.live-video.net/api/video/v1/eu-west-1.263504711656.channel.ON1mIX5kLymP.m3u8"
+                                        // videoStream={channelPlaybackURL}
+                                        videoStream={videostream}
                                     />
                                 </Col>
                             </Row>

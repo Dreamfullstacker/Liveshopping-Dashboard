@@ -132,11 +132,13 @@ const  Sample = (props) => {
                     {formattedRecordAPIResponse.map((v, i) => {
                       return (
                         <figure className="col-xl-3 col-md-4 col-6" itemProp="associatedMedia" itemScope="" key={i}>
-                          <a href="dashboard" itemProp="contentUrl" data-size="1600x950">
+                          <Link to={`scheduledvideo/${v.id}`}>
+                          {/* <a href="dashboard" itemProp="contentUrl" data-size="1600x950"> */}
                             <img className="img-thumbnail" src={require('../../assets/images/lightgallry/01.png')} itemProp="thumbnail" alt="Image description"></img>
-                          </a>
+                          {/* </a> */}
                           <figcaption itemProp="caption description">Titre : {v.title}</figcaption>
                           <figcaption itemProp="caption description">Schedule Date : {v.date}</figcaption>
+                          </Link>
                         </figure>
                       );
                     })}
