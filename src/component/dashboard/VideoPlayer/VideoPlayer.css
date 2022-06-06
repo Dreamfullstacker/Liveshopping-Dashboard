@@ -16,6 +16,9 @@
 .video-js .vjs-control-bar {
   border-radius: 0 0 5px 5px;
 }
+.vjs-tech{
+  height: fit-content!important;
+}
 
 @media (max-width: 480px) {
   /* Smaller Screens */

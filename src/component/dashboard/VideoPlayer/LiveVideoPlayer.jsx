@@ -66,6 +66,7 @@ class VideoPlayer extends Component {
           className="video-js vjs-fluid vjs-big-play-centered"
           controls={this.props.controls}
           playsInline
+          style={{paddingTop: "200%"}}
         ></video>
       </div>
     );

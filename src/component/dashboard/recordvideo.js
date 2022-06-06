@@ -14,6 +14,8 @@ import {
 
 import * as config from "../../config";
 
+var tempMetaData = [];
+
 function NotFoundError() {
     return (
         <>
@@ -55,8 +57,9 @@ function ThumbnailRadio(props) {
     );
   }
 
-const  Sample = () => {
+const  RecordVideo = () => {
     var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    var productions = [];
     let { id } = useParams();
     const [videoTitle, setVideoTitle] = useState("");
     const [videoSubtitle, setVideoSubtitle] = useState("");
@@ -92,16 +95,20 @@ const  Sample = () => {
           console.error(error);
         });
       }
-    useEffect(() => {
-        // Set mounted to true so that we know when first mount has happened
-        let mounted = true;
-        if (mounted && !apiFetched) {
-            fetchAPI()
-        }
-        // Set mounted to false when the component is unmounted
-        return () => { mounted = false };
-    }, [fetchAPI]);
+    // useEffect(() => {
+    //     // Set mounted to true so that we know when first mount has happened
+    //     let mounted = true;
+    //     if (mounted && !apiFetched) {
+    //         fetchAPI()
+    //     }
+    //     // Set mounted to false when the component is unmounted
+    //     return () => { mounted = false };
+    // }, [fetchAPI]);
     
+    useEffect(()=>{
+      fetchAPI()
+      console.log("Called Sample");
+    },[])
     const handleOnChange = (e) => {
         setFormChanged(true);
         switch (e.currentTarget.id) {
@@ -164,8 +171,10 @@ const  Sample = () => {
     )
 
     const handleTimeMetadataEvent = (data) => {
-      console.log("first test", data);
-      setMetadata([...metadata, JSON.parse(data)]);
+      setMetadata((metadata) => {
+        return [...metadata, JSON.parse(data)]
+      });
+      // setMetadata(tempMetaData);
     }
     return (
          <Fragment>
@@ -255,23 +264,23 @@ const  Sample = () => {
                             </fieldset>
                         </Col>
                     </Row>
+                    <h3>Time metad productions</h3>
                     <Row className='pt-3'>
-                      <h3>Time metad productions</h3>
-                      <div>
-                      {metadata.map((metadata_production, i) => {
-                        console.log(metadata)
-                        return (
-                          <figure className="col-xl-3 col-md-4 col-6" itemProp="associatedMedia" itemScope="" key={i}>
-                            <img className="img-thumbnail" src={`${metadata_production.production_item_image_path}`} itemProp="thumbnail" alt="Image description"></img>
-                            <figcaption itemProp="caption description">Name : {metadata_production.production_item_name}</figcaption>
-                            <figcaption itemProp="caption description">Price : {metadata_production.production_item_price}</figcaption>
-                            <figcaption itemProp="caption description">Discount : {metadata_production.production_item_discount}</figcaption>
-                            <figcaption itemProp="caption description">Delivery : {metadata_production.production_item_delivery}</figcaption>
-                            <figcaption itemProp="caption description"><a href={`${metadata_production.production_item_articleURL}`}>Article URL : {metadata_production.production_item_articleURL}</a></figcaption>
-                          </figure>
-                        );
-                      })}
-                      </div>
+                      {metadata.map((metadata_production, i) => 
+                        // console.log(metadata)
+                        (
+                          <Col sm="4" key={i}>
+                            <figure itemProp="associatedMedia" itemScope="">
+                              <img className="img-thumbnail" src={`${metadata_production.production_item_image_path}`} itemProp="thumbnail" alt="Image description"></img>
+                              <figcaption itemProp="caption description">Name : {metadata_production.production_item_name}</figcaption>
+                              <figcaption itemProp="caption description">Price : {metadata_production.production_item_price}</figcaption>
+                              <figcaption itemProp="caption description">Discount : {metadata_production.production_item_discount}</figcaption>
+                              <figcaption itemProp="caption description">Delivery : {metadata_production.production_item_delivery}</figcaption>
+                              <figcaption itemProp="caption description"><a href={`${metadata_production.production_item_articleURL}`}>Article URL : {metadata_production.production_item_articleURL}</a></figcaption>
+                            </figure>
+                          </Col>
+                        )
+                      )}
                     </Row>
                   </CardBody>
                 </Card>
@@ -282,4 +291,4 @@ const  Sample = () => {
     );
 }
 
-export default Sample;
+export default RecordVideo;

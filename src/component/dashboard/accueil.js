@@ -20,7 +20,12 @@ const  Sample = (props) => {
   const [scheduledresponse, setScheduledResponse] = useState({});
   const [recordedresponse, setRecordedResponse] = useState({});
   const [timerID, setTimerID] = useState(false);
-  var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  var currentUser = null;
+  useEffect(()=>{
+    currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if(currentUser == null)
+    window.location.replace("/login");
+  }, [])
   const fetchAPI = () => {
     // Call API and set the matched value if we're mounted
     const getVideosUrl = `${config.API_URL}/channel/${currentUser.username}/video`;
@@ -45,7 +50,7 @@ const  Sample = (props) => {
       return Videos
     })
     .then(Videos => {
-      console.log(Videos)
+      // console.log(Videos)
       const sortedScheduledVods = sortByKey(Videos[0], "CreatedOn")
       const sortedRecordedVods = sortByKey(Videos[1], "CreatedOn")
       setScheduledResponse(sortedScheduledVods);
@@ -57,9 +62,7 @@ const  Sample = (props) => {
   }
 
   useEffect(() => {
-    // Set mounted to true so that we know when first mount has happened
     let mounted = true;
-    console.log(currentUser.state_disable)
     if (!timerID && mounted) {
       fetchAPI();
       const timer = setInterval(() => {
@@ -75,6 +78,7 @@ const  Sample = (props) => {
     }
   }, [timerID])
 
+  
   const formattedScheduleAPIResponse = [];
 
   // Format Thumbnail, title, subtitle, hint into array of objects
@@ -120,7 +124,7 @@ const  Sample = (props) => {
                   <CardHeader>
                     <div className='row justify-content-between'>
                       <h5>LIVE Vidéo Programmé</h5>
-                      {currentUser.state_disable == true ?
+                      {currentUser != null && currentUser.state_disable == true ?
                         <Link to = {'live'}><Button>Create New Live</Button></Link>
                         :
                         <></>
